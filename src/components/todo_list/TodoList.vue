@@ -3,6 +3,8 @@
      <input type="text" class="todo-input" placeholder="What needs to be done?"
         v-model="newTodo" @keyup.enter="addTodo">
      <p class="todoHere">Todo list goes here:</p>
+
+     <transition-group name="fade" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
      <div v-for="(todo, index) in todosFiltered" :key="todo.id" class="todo-item">
          <div class="todo-item-left">
            <input type="checkbox" v-model="todo.completed">
@@ -15,6 +17,8 @@
             &times;
           </div>
      </div>
+     </transition-group>
+
      <div class="extra-container">
        <div><label><input type="checkbox" :checked="!anyRemaining" @change="checkAllTodos"> Check All </label></div>
        <div>{{ remaining }} items left </div>
@@ -26,7 +30,9 @@
         <button :class="{ active : filter === 'completed'}" @click="filter = 'completed'">Completed</button>
       </div>
       <div>
+        <transition name="fade">
         <button v-if="showClearCompletedButton" @click="clearCompleted">Clear Completed</button>
+        </transition>
       </div>
      </div>
   </div>
@@ -112,6 +118,7 @@ export default {
 </script>
 
 <style>
+    @import url("https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css");
     .todo-input {
         width: 100%;
         padding: 10px 18px;
@@ -179,6 +186,12 @@ export default {
 
     .extra-container {
       display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 16px;
+      border-top: 1px solid lightgray;
+      padding-top: 14px;
+      margin-bottom: 14px;
     }
 
     button {
@@ -197,5 +210,14 @@ export default {
 
     .active {
       background: lightgreen;
+    }
+
+    /* CSS Transitions */
+    .fade-enter-active, .fade-leave-active {
+      transition: opacity .4s;
+    }
+
+    .fade-enter, .fade-leave-to {
+      opacity: 0;
     }
 </style>
