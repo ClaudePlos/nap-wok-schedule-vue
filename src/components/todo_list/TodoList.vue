@@ -5,8 +5,9 @@
      <p class="todoHere">Todo list goes here:</p>
      <div v-for="(todo, index) in todos" :key="todo.id" class="todo-item">
          <div class="todo-item-left">
+           <input type="checkbox" v-model="todo.completed">
            <div v-if="!todo.editing" class="todo-item-label" @dblclick="editTodo(todo)">{{ todo.title }}</div>
-           <input v-else type="text" class="todo-item-label" v-model="todo.title"
+           <input v-else type="text" class="todo-item-edit" v-model="todo.title"
               @blur="doneEditTodo(todo)" @keyup.enter="doneEditTodo(todo)" @keyup.esc="cancelEditTodo(todo)" v-focus>
          </div>
          <div class="remove-item" @click="removeTodo(index)">
@@ -50,6 +51,9 @@ export default {
       todo.editing = true
     },
     doneEditTodo (todo) {
+      if (todo.title.trim().length === 0) {
+        todo.title = this.beforeEditCache
+      }
       todo.editing = false
     },
     cancelEditTodo (todo) {
@@ -88,6 +92,35 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
+    }
+
+    .todo-item-left {
+      display: flex;
+      align-items: center;
+    }
+
+    .todo-item-label {
+      padding: 10px;
+      border: 1px solid white;
+    }
+
+    .todo-item-edit {
+      font-size: 24px;
+      color: #2c3e50;
+      margin-left: 12px;
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .todo-item-edit:focus {
+      outline: none;
+    }
+
+    .completed {
+      text-decoration: line-through;
+      color: gray;
     }
 
     .remove-item {
