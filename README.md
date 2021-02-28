@@ -1,4 +1,4 @@
-# nap-grafiki-vue
+# nap-work-schedule-vue
 
 ## Project setup
 ```
