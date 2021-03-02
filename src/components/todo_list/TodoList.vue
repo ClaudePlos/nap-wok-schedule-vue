@@ -5,18 +5,8 @@
      <p class="todoHere">Todo list goes here:</p>
 
      <transition-group name="fade" enter-active-class="animated fadeInUp" leave-active-class="animated fadeOutDown">
-     <div v-for="(todo, index) in todosFiltered" :key="todo.id" class="todo-item">
-         <div class="todo-item-left">
-           <input type="checkbox" v-model="todo.completed">
-           <div v-if="!todo.editing" class="todo-item-label" :class="{completed : todo.completed}"
-              @dblclick="editTodo(todo)">{{ todo.title }}</div>
-           <input v-else type="text" class="todo-item-edit" v-model="todo.title"
-              @blur="doneEditTodo(todo)" @keyup.enter="doneEditTodo(todo)" @keyup.esc="cancelEditTodo(todo)" v-focus>
-         </div>
-         <div class="remove-item" @click="removeTodo(index)">
-            &times;
-          </div>
-     </div>
+     <todo-item v-for="(todo, index) in todosFiltered" :key="todo.id" :todo="todo" :index="index" @removeTodo="removeTodo">
+     </todo-item>
      </transition-group>
 
      <div class="extra-container">
@@ -39,8 +29,12 @@
 </template>
 
 <script>
+import TodoItem from './TodoItem'
 export default {
   name: 'todo-list',
+  components: {
+    TodoItem
+  },
   data () {
     return {
       newTodo: '',
